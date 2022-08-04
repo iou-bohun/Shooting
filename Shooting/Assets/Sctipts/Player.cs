@@ -7,13 +7,19 @@ public class Player : MonoBehaviour
     public float speed;
     public float maxFlashTime;
     public float curFlashTime;
+    public float maxShootingTime;
+    public float curShootingTime;
 
     public bool isTouchTop;
     public bool isTouchBottom;
     public bool isTouchLeft;
     public bool isTouchRight;
 
+    public GameObject bulletA;
+    public GameObject bulletB;
     Animator anim;
+
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -21,7 +27,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move();
+        Fire();
+        Reload();
     }
+
+
     public void Move()
     {
         float h = Input.GetAxisRaw("Horizontal");
@@ -49,6 +59,19 @@ public class Player : MonoBehaviour
         }
     }
 
+     void Fire()
+    {
+        if (!Input.GetKey(KeyCode.Z)) return;
+        if (curShootingTime < maxShootingTime) return;
+          GameObject bullet = Instantiate(bulletA, transform.position, transform.rotation);
+          Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
+          rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+        curShootingTime = 0;
+    }
+     void Reload()
+    {
+        curShootingTime += Time.deltaTime;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Border")
