@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float curFlashTime;
     public float maxShootingTime;
     public float curShootingTime;
+    public float power;
 
     public bool isTouchTop;
     public bool isTouchBottom;
@@ -63,9 +64,37 @@ public class Player : MonoBehaviour
     {
         if (!Input.GetKey(KeyCode.Z)) return;
         if (curShootingTime < maxShootingTime) return;
-          GameObject bullet = Instantiate(bulletA, transform.position, transform.rotation);
-          Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
-          rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+
+        switch (power)
+        {
+            case 1:
+             GameObject bullet = Instantiate(bulletA, transform.position, transform.rotation);
+             Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
+             rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+             break;
+            case 2:
+                GameObject bulletR = Instantiate(bulletA, transform.position+Vector3.right*0.1f, transform.rotation);
+                Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
+                rigidR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+
+                GameObject bulletL = Instantiate(bulletA, transform.position+ Vector3.left * 0.1f, transform.rotation);
+                Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
+                rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                break;
+            case 3:
+                GameObject bulletPL = Instantiate(bulletA, transform.position + Vector3.right * 0.2f, transform.rotation);
+                Rigidbody2D rigidPL = bulletPL.GetComponent<Rigidbody2D>();
+                rigidPL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                GameObject bulletPR = Instantiate(bulletA, transform.position + Vector3.left * 0.2f, transform.rotation);
+                Rigidbody2D rigidPR = bulletPR.GetComponent<Rigidbody2D>();
+                rigidPR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                GameObject bulletP = Instantiate(bulletB, transform.position, transform.rotation);
+                Rigidbody2D rigidP = bulletP.GetComponent<Rigidbody2D>();
+                rigidP.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                break;
+        }
+        //power one
+         
         curShootingTime = 0;
     }
      void Reload()
@@ -93,6 +122,10 @@ public class Player : MonoBehaviour
 
             }
         }
+        else if(collision.gameObject.tag == "Enemy")
+        {
+            Destroy(gameObject);
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -116,4 +149,7 @@ public class Player : MonoBehaviour
             }
         }
     }
+    
+    
+        
 }
