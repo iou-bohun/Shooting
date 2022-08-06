@@ -7,15 +7,28 @@ public class Enemy : MonoBehaviour
     public float speed;
     public int health;
     public Sprite[] sprites;
+    public string enemyName;
+
+    public float maxShootingTime;
+    public float curShootingTime;
+    public GameObject player;
+    
+
+    public GameObject bulletA;
+    public GameObject bulletB;
 
     SpriteRenderer spriterenderer;
-    Rigidbody2D rigid;
+    
 
     private void Awake()
     {
         spriterenderer = GetComponent<SpriteRenderer>();
-        rigid = GetComponent<Rigidbody2D>();
-        rigid.velocity = Vector2.down * speed;
+        
+    }
+    private void Update()
+    {
+        Fire();
+        Reload();
     }
 
     void OnHit(int dmg)
@@ -37,7 +50,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "BulletBorder")
+        if(collision.gameObject.tag == "EnemyBorder")
         {
             Destroy(gameObject);
         }
@@ -47,5 +60,30 @@ public class Enemy : MonoBehaviour
             OnHit(bullet.dmg);
             Destroy(collision.gameObject);
         }
+    }
+    void Fire()
+    {
+        if (curShootingTime < maxShootingTime) return;
+        if(enemyName == "S")
+        {
+            GameObject bullet = Instantiate(bulletA, transform.position,transform.rotation);
+            Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
+            rigid.AddForce(Vector2.down * 10, ForceMode2D.Impulse);
+        }
+        else if(enemyName == "L")
+        {
+            GameObject bulletR = Instantiate(bulletB, transform.position + Vector3.right * 0.4f, transform.rotation);
+            GameObject bulletL = Instantiate(bulletB, transform.position + Vector3.left * 0.4f,transform.rotation);
+            Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
+            Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
+            Vector3 dirvec = player.transform.position - transform.position;
+            rigidR.AddForce(dirvec.normalized* 10, ForceMode2D.Impulse);
+            rigidL.AddForce(dirvec.normalized * 10, ForceMode2D.Impulse);
+        }
+        curShootingTime = 0;
+    }
+    void Reload()
+    {
+        curShootingTime += Time.deltaTime;
     }
 }

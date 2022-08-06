@@ -156,3 +156,8 @@ MonoBehaviour:
   sprites:
   - {fileID: -1147401495359466748, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   - {fileID: -7844560889915226194, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
+  enemyName: M
+  maxShootingTime: 0
+  curShootingTime: 0
+  bulletA: {fileID: 6611112755970685938, guid: 0993224eee81ab942aa00fbf49ef4c74, type: 3}
+  bulletB: {fileID: 6611112755970685938, guid: 73aeefa3a6a9b3342ac0cd8fbe676c24, type: 3}

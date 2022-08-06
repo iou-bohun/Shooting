@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public float curShootingTime;
     public float power;
     public bool godMode;
+    public int blink;
 
     public bool isTouchTop;
     public bool isTouchBottom;
@@ -19,12 +20,14 @@ public class Player : MonoBehaviour
 
     public GameObject bulletA;
     public GameObject bulletB;
+    SpriteRenderer spriteRenderer;
     Animator anim;
 
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     void Update()
     {
@@ -47,10 +50,9 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X) && curFlashTime > maxFlashTime)
         {
-            speed = 150;
+            speed = blink;
             curFlashTime = 0;
-            godMode = true;
-            Invoke("GodMode",0.2f);
+            GodMode();
         }
         else speed = 4;
         transform.position = curPos + nextPos;
@@ -65,7 +67,15 @@ public class Player : MonoBehaviour
 
     void GodMode()
     {
+        godMode = true;
+        spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+        Invoke("ReturnGodMode",0.5f);
+        
+    }
+    void ReturnGodMode()
+    {
         godMode = false;
+        spriteRenderer.color = new Color(1, 1, 1, 1);
     }
      void Fire()
     {
@@ -126,12 +136,11 @@ public class Player : MonoBehaviour
                 case "Right":
                     isTouchRight = true;
                     break;
-
             }
+
         }
-        else if(collision.gameObject.tag == "Enemy")
+        else if(collision.gameObject.tag == "EnemyBullet"&&godMode == false)
         {
-            if (godMode == true) return;
             Destroy(gameObject);
         }
     }
@@ -157,7 +166,13 @@ public class Player : MonoBehaviour
             }
         }
     }
-    
-    
-        
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Enemy"&&godMode ==false)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
 }
