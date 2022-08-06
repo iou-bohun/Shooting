@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public float maxShootingTime;
     public float curShootingTime;
     public float power;
+    public bool godMode;
 
     public bool isTouchTop;
     public bool isTouchBottom;
@@ -48,6 +49,8 @@ public class Player : MonoBehaviour
         {
             speed = 150;
             curFlashTime = 0;
+            godMode = true;
+            Invoke("GodMode",0.2f);
         }
         else speed = 4;
         transform.position = curPos + nextPos;
@@ -60,6 +63,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    void GodMode()
+    {
+        godMode = false;
+    }
      void Fire()
     {
         if (!Input.GetKey(KeyCode.Z)) return;
@@ -124,6 +131,7 @@ public class Player : MonoBehaviour
         }
         else if(collision.gameObject.tag == "Enemy")
         {
+            if (godMode == true) return;
             Destroy(gameObject);
         }
     }
