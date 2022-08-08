@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     public float curShootingTime;
     public float power;
     public bool godMode;
+    public int score;
+    public int health;
     public int blink;
 
     public bool isTouchTop;
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour
     public GameObject bulletB;
     SpriteRenderer spriteRenderer;
     Animator anim;
+    public GameManager manager;
 
 
     private void Awake()
@@ -141,7 +144,8 @@ public class Player : MonoBehaviour
         }
         else if(collision.gameObject.tag == "EnemyBullet"&&godMode == false)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            manager.RespawnPlayer();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -170,7 +174,10 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enemy"&&godMode ==false)
         {
-            Destroy(gameObject);
+            
+            gameObject.SetActive(false);
+            manager.RespawnPlayer();
+
         }
     }
 
