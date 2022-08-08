@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public Sprite[] sprites;
     public string enemyName;
     public int score;
+    public bool isdead;
 
     public float maxShootingTime;
     public float curShootingTime;
@@ -34,12 +35,16 @@ public class Enemy : MonoBehaviour
 
     void OnHit(int dmg)
     {
+        
+
         health -= dmg;
         spriterenderer.sprite = sprites[1];
         Invoke("ReturnSprite",0.1f);
 
         if (health <= 0)
         {
+            if (isdead) return;
+            isdead = true;
             Player playerLogic = player.GetComponent<Player>();
             playerLogic.score += score;
             Destroy(gameObject);

@@ -152,7 +152,8 @@ MonoBehaviour:
   - {fileID: -8421458170528590454, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   - {fileID: 3714015224569861163, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   enemyName: L
-  score: 500
+  score: 1
+  isdead: 0
   maxShootingTime: 1
   curShootingTime: 0
   player: {fileID: 0}

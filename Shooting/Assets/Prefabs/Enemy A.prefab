@@ -142,7 +142,8 @@ MonoBehaviour:
   - {fileID: 8414478535512612329, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   - {fileID: 4326287474489854147, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   enemyName: S
-  score: 100
+  score: 1
+  isdead: 0
   maxShootingTime: 1
   curShootingTime: 0
   player: {fileID: 0}

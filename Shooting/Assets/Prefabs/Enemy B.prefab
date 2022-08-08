@@ -157,7 +157,8 @@ MonoBehaviour:
   - {fileID: -1147401495359466748, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   - {fileID: -7844560889915226194, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   enemyName: M
-  score: 200
+  score: 1
+  isdead: 0
   maxShootingTime: 0
   curShootingTime: 0
   player: {fileID: 0}
