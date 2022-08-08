@@ -12,13 +12,14 @@ public class Player : MonoBehaviour
     public float power;
     public bool godMode;
     public int score;
-    public int health;
+    public int life;
     public int blink;
 
     public bool isTouchTop;
     public bool isTouchBottom;
     public bool isTouchLeft;
     public bool isTouchRight;
+    public bool isHit;
 
     public GameObject bulletA;
     public GameObject bulletB;
@@ -39,7 +40,7 @@ public class Player : MonoBehaviour
         Reload();
     }
 
-
+    //플레이어 이동/////////////////////////////
     public void Move()
     {
         float h = Input.GetAxisRaw("Horizontal");
@@ -67,20 +68,36 @@ public class Player : MonoBehaviour
             anim.SetInteger("Input", (int)h);
         }
     }
+    /////////////////////////////////////////////
 
-    void GodMode()
+    // 플레이어 X키 무적///////////////////////////
+    public void GodMode()
     {
         godMode = true;
         spriteRenderer.color = new Color(1, 1, 1, 0.5f);
         Invoke("ReturnGodMode",0.5f);
-        
     }
     void ReturnGodMode()
     {
         godMode = false;
         spriteRenderer.color = new Color(1, 1, 1, 1);
     }
-     void Fire()
+    //////////////////////////////////////////////////////
+    
+    // 플레이어 스폰 무적
+    public void SponGodMode()
+    {
+        godMode = true;
+        spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+        Invoke("ReturnGodMode", 1f);
+    }
+    void SponReturnGodMode()
+    {
+        godMode = false;
+        spriteRenderer.color = new Color(1, 1, 1, 1);
+    }
+    ///////////////////////////////////////
+    void Fire()
     {
         if (!Input.GetKey(KeyCode.Z)) return;
         if (curShootingTime < maxShootingTime) return;
@@ -113,14 +130,17 @@ public class Player : MonoBehaviour
                 rigidP.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
         }
-        //power one
+       
          
         curShootingTime = 0;
     }
+
      void Reload()
     {
         curShootingTime += Time.deltaTime;
     }
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Border")
@@ -144,8 +164,20 @@ public class Player : MonoBehaviour
         }
         else if(collision.gameObject.tag == "EnemyBullet"&&godMode == false)
         {
+            if (isHit) return;
+            isHit = true;
+            life -=1;
+            manager.UpdateLifeIcon(life);
+            if(life == 0)
+            {
+               manager.GameOver();
+            }
+            else
+            {
+                manager.RespawnPlayer();
+            }
             gameObject.SetActive(false);
-            manager.RespawnPlayer();
+            Destroy(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -174,9 +206,18 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enemy"&&godMode ==false)
         {
-            
+            life -= 1;
+            manager.UpdateLifeIcon(life);
+            if (life == 0)
+            {
+               manager.GameOver();
+            }
+            else
+            {
+                manager.RespawnPlayer();
+            }
             gameObject.SetActive(false);
-            manager.RespawnPlayer();
+            Destroy(collision.gameObject);
 
         }
     }

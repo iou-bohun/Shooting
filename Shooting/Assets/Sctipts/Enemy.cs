@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public int health;
     public Sprite[] sprites;
     public string enemyName;
+    public int score;
 
     public float maxShootingTime;
     public float curShootingTime;
@@ -39,6 +40,8 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
+            Player playerLogic = player.GetComponent<Player>();
+            playerLogic.score += score;
             Destroy(gameObject);
         }
 
@@ -77,8 +80,8 @@ public class Enemy : MonoBehaviour
             Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
             Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
             Vector3 dirvec = player.transform.position - transform.position;
-            rigidR.AddForce(dirvec.normalized* 10, ForceMode2D.Impulse);
-            rigidL.AddForce(dirvec.normalized * 10, ForceMode2D.Impulse);
+            rigidR.AddForce(dirvec.normalized*7, ForceMode2D.Impulse);
+            rigidL.AddForce(dirvec.normalized*7, ForceMode2D.Impulse);
         }
         curShootingTime = 0;
     }
