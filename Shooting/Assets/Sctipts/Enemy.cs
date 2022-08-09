@@ -14,7 +14,10 @@ public class Enemy : MonoBehaviour
     public float maxShootingTime;
     public float curShootingTime;
     public GameObject player;
-    
+    public GameObject itemPower;
+    public GameObject itemBoom;
+    public GameObject itemCoin;
+
 
     public GameObject bulletA;
     public GameObject bulletB;
@@ -33,10 +36,8 @@ public class Enemy : MonoBehaviour
         Reload();
     }
 
-    void OnHit(int dmg)
+    public void OnHit(int dmg)
     {
-        
-
         health -= dmg;
         spriterenderer.sprite = sprites[1];
         Invoke("ReturnSprite",0.1f);
@@ -47,6 +48,22 @@ public class Enemy : MonoBehaviour
             isdead = true;
             Player playerLogic = player.GetComponent<Player>();
             playerLogic.score += score;
+
+            //아이템 드랍
+            int ran = Random.Range(0,10);
+            if (ran < 3) Debug.Log("Nothing");
+            else if (ran < 5)
+            {
+                Instantiate(itemCoin, transform.position, itemCoin.transform.rotation);
+            }
+            else if (ran < 8)
+            {
+                Instantiate(itemPower, transform.position, itemPower.transform.rotation);
+            }
+            else if (ran < 10)
+            {
+                Instantiate(itemBoom, transform.position, itemBoom.transform.rotation);
+            }
             Destroy(gameObject);
         }
 
@@ -85,8 +102,8 @@ public class Enemy : MonoBehaviour
             Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
             Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
             Vector3 dirvec = player.transform.position - transform.position;
-            rigidR.AddForce(dirvec.normalized*7, ForceMode2D.Impulse);
-            rigidL.AddForce(dirvec.normalized*7, ForceMode2D.Impulse);
+            rigidR.AddForce(dirvec.normalized*5, ForceMode2D.Impulse);
+            rigidL.AddForce(dirvec.normalized*5, ForceMode2D.Impulse);
         }
         curShootingTime = 0;
     }

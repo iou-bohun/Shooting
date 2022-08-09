@@ -9,18 +9,25 @@ public class Player : MonoBehaviour
     public float curFlashTime;
     public float maxShootingTime;
     public float curShootingTime;
-    public float power;
+    public int power;
+    public int boom;
     public bool godMode;
     public int score;
     public int life;
     public int blink;
+    public int maxPower;
+    public int maxBoom;
+    public int cBoom;
+    
 
+    public bool isBoomTime;
     public bool isTouchTop;
     public bool isTouchBottom;
     public bool isTouchLeft;
     public bool isTouchRight;
     public bool isHit;
 
+    public GameObject BoomEfect;
     public GameObject bulletA;
     public GameObject bulletB;
     SpriteRenderer spriteRenderer;
@@ -38,6 +45,7 @@ public class Player : MonoBehaviour
         Move();
         Fire();
         Reload();
+        Boom();
     }
 
     //플레이어 이동/////////////////////////////
@@ -105,7 +113,7 @@ public class Player : MonoBehaviour
         switch (power)
         {
             case 1:
-             GameObject bullet = Instantiate(bulletA, transform.position, transform.rotation);
+             GameObject bullet = Instantiate(bulletA, transform.position+Vector3.forward*0.2f, transform.rotation);
              Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
              rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
              break;
@@ -134,6 +142,34 @@ public class Player : MonoBehaviour
          
         curShootingTime = 0;
     }
+
+    void Boom()
+    {
+        if (!Input.GetKeyDown(KeyCode.C))
+            return;
+        if (isBoomTime)
+            return;
+        if (boom == 0)
+            return;
+        boom--;
+        isBoomTime = true;
+       manager.UpdateBoomIcon(boom);
+        BoomEfect.SetActive(true);
+        Invoke("BoomOff", 1f);
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        for(int index = 0; index< enemies.Length; index++)
+        {
+            Enemy enemyLogic = enemies[index].GetComponent<Enemy>();
+            enemyLogic.OnHit(1000);
+        }
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
+        for (int index = 0; index < bullets.Length; index++)
+        {
+            Destroy(bullets[index]);
+        }
+    }
+    
 
      void Reload()
     {
@@ -220,6 +256,41 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
 
         }
+        else if(collision.gameObject.tag == "Item")
+        {
+            Item item = collision.gameObject.GetComponent<Item>();
+            switch (item.type)
+            {
+                case "Boom":
+                    if (boom == maxBoom)
+                    {
+                        score += 500;
+                    }
+                    else boom++;
+                   manager.UpdateBoomIcon(boom);
+                    Destroy(collision.gameObject);
+                    break;
+                case "Coin":
+                    score += 1000;
+                    Destroy(collision.gameObject);
+                    
+                    break;
+                case "Power":
+                    if(power == maxPower)
+                    {
+                        score += 500;
+                    }
+                    else power++;
+                    Destroy(collision.gameObject);
+                    break;
+
+            }
+        }
+    }
+    void BoomOff()
+    {
+        BoomEfect.SetActive(false);
+        isBoomTime = false;
     }
 
 

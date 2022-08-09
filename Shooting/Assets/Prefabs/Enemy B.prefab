@@ -162,5 +162,8 @@ MonoBehaviour:
   maxShootingTime: 0
   curShootingTime: 0
   player: {fileID: 0}
+  itemPower: {fileID: 7266242176282815738, guid: 0dc1f06e72fd8a54eb36823c0023c802, type: 3}
+  itemBoom: {fileID: 1094571920619827027, guid: ca6f2f900bab2f54f87ffc0ff3a09058, type: 3}
+  itemCoin: {fileID: 818230943872994048, guid: c88011115ba80e64a9528ca4f7bf16d4, type: 3}
   bulletA: {fileID: 6611112755970685938, guid: 0993224eee81ab942aa00fbf49ef4c74, type: 3}
   bulletB: {fileID: 6611112755970685938, guid: 73aeefa3a6a9b3342ac0cd8fbe676c24, type: 3}

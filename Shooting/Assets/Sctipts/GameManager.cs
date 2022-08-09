@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public Text scoreText;
     public Image[] lifeImage;
+    public Image[] boomImage;
 
     public GameObject gameOver;
     
@@ -89,5 +90,17 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
-  }
+
+    public void UpdateBoomIcon(int boom)
+    {
+        for (int index = 0; index < boomImage.Length; index++)
+        {
+            boomImage[index].color = new Color(1, 1, 1, 0);
+        }
+        for (int index = 0; index < boom; index++)
+        {
+            boomImage[index].color = new Color(1, 1, 1, 1);
+        }
+    }
+}
 
