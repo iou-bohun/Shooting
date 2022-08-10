@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
         isBoomTime = true;
        manager.UpdateBoomIcon(boom);
         BoomEfect.SetActive(true);
-        Invoke("BoomOff", 1f);
+        Invoke("BoomOff", 2f);
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         for(int index = 0; index< enemies.Length; index++)

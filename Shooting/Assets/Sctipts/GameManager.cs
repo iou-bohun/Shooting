@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         
     public void RespawnPlayer()
     {
+        
         Invoke("RespawnPlayerExe",2f);
     }
     public void RespawnPlayerExe()
@@ -69,6 +70,9 @@ public class GameManager : MonoBehaviour
         Player playerLogic = player.GetComponent<Player>();
         playerLogic.isHit = false;
         playerLogic.SponGodMode();
+        if (playerLogic.power == 1) return;
+        playerLogic.power--;
+
 
     }
     public void UpdateLifeIcon(int life)
